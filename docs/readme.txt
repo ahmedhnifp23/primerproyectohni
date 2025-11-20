@@ -1,0 +1,1 @@
+Aquí irá documentación varia como por ejemplo el enunciado del proyecto, diagramas, documentación oficial, carta de productos y demás documentación relacionada con este proyecto.
