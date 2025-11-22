@@ -4,15 +4,23 @@ class Dish
 {
 
 
-    private int $dish_id;
+    private ?int $dish_id;
     private string $dish_name;
     private string $dish_description;
     private float $base_price;
     private string $images;//encode and decode
     private bool $available;
-    private $category;
+    private string $category;
 
-    public function __construct(){
+    public function __construct(int $dish_id, string $dish_name, string $dish_description, float $base_price, array $images = [], bool $available, string $category)
+    {
+        $this->dish_id = $dish_id;
+        $this->dish_name = $dish_name;
+        $this->dish_description = $dish_description;
+        $this->base_price = $base_price;
+        $this->images = json_encode($images);
+        $this->available = $available;
+        $this->category = $category;
         
     }
 
@@ -21,7 +29,7 @@ class Dish
     /**
      * Get the value of dish_id
      */ 
-    public function getDish_id()
+    public function getDishId()
     {
         return $this->dish_id;
     }
@@ -31,7 +39,7 @@ class Dish
      *
      * @return  self
      */ 
-    public function setDish_id($dish_id)
+    public function setDishId($dish_id)
     {
         $this->dish_id = $dish_id;
 
@@ -41,7 +49,7 @@ class Dish
     /**
      * Get the value of dish_name
      */ 
-    public function getDish_name()
+    public function getDishName()
     {
         return $this->dish_name;
     }
@@ -51,7 +59,7 @@ class Dish
      *
      * @return  self
      */ 
-    public function setDish_name($dish_name)
+    public function setDishName($dish_name)
     {
         $this->dish_name = $dish_name;
 
@@ -61,7 +69,7 @@ class Dish
     /**
      * Get the value of dish_description
      */ 
-    public function getDish_description()
+    public function getDishDescription()
     {
         return $this->dish_description;
     }
@@ -71,9 +79,9 @@ class Dish
      *
      * @return  self
      */ 
-    public function setDish_description($dish_description)
+    public function setDishDescription($dishDescription)
     {
-        $this->dish_description = $dish_description;
+        $this->dish_description = $dishDescription;
 
         return $this;
     }
@@ -81,7 +89,7 @@ class Dish
     /**
      * Get the value of base_price
      */ 
-    public function getBase_price()
+    public function getBasePrice()
     {
         return $this->base_price;
     }
@@ -91,9 +99,9 @@ class Dish
      *
      * @return  self
      */ 
-    public function setBase_price($base_price)
+    public function setBasePrice($basePrice)
     {
-        $this->base_price = $base_price;
+        $this->base_price = $basePrice;
 
         return $this;
     }

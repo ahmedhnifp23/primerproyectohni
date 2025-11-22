@@ -1,39 +1,41 @@
 <?php
 
-//We create the class of the database PHP Data Object that will use the DAO models to obtain the data. That cannot me instantied and will be singleton.
 class DatabasePDO
 {
     //Variables that will use to create the Database Source Name
-    private static string $host = 'localhost';
-    private static string $dbname = 'thalassa_db';
-    private static string $user = 'root';
-    private static string $password = 'Asdqwe!23';
+    private string $host = 'localhost';
+    private string $dbname = 'thalassa_db';
+    private string $user = 'root';
+    private string $password = 'Asdqwe!23';
 
+    //Variable where will save the PDO.
+    private $conn = null;
 
-    private static $conn;
-
-
-
-    //Function that will realize the connection to the DB with the values defined on tha variables.
-    public static function connect()
+    //Constructor of the class that creates the connection when an instance is created.
+    public function __construct()
     {
-        if (self::$conn == null) {
-            $dsn = 'mysql:host=' . self::$host . ';dbname=' . self::$dbname . ';charset=utf8mb4';
+        $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname . ';charset=utf8mb4';
 
-            try {
-                self::$conn = new PDO($dsn, self::$user, self::$password);
-                self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                self::$conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-                var_dump('Conexión con la base de datos ' . self::$dbname . ' realizada correctamente');
-            } catch (PDOException $e) {
-                die('Conexión fallida: ' . $e->getMessage());
-            }
+        try {
+            $this->conn = new PDO($dsn, $this->user, $this->password);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+            var_dump('Conexión con la base de datos ' . $this->dbname . ' realizada correctamente');
+        } catch (PDOException $e) {
+            die('Conexión fallida: ' . $e->getMessage());
         }
-
-        return self::$conn;
     }
 
-    public static function disconnect(){
-        self::$conn = null;
+
+
+    //Function that returns the connection.
+    public function getConnection(): PDO
+    {
+        return $this->conn;
+    }
+    //Function that closes the connection.
+    public function disconnect(): void
+    {
+        $this->conn = null;
     }
 }
