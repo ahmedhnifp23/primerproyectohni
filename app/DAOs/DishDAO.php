@@ -8,7 +8,7 @@ class DishDAO
     private $db; //Variable where i save the instance of the PDO.
     private $conn; //Variable where i save the connection.
     private $table = 'dishes'; //Variable with the name of the table.
-    private $dish; //Variable where I will save the object of the dish model.
+    private $dishes = []; //Variable where I will save the array of dishes.
 
     //Construct with a instance of dbPDO and model Dish.
     public function __construct()
@@ -21,24 +21,25 @@ class DishDAO
         $this->conn = $this->db->getConnection();
         $query = 'select * from ' . $this->table;
         $stmt = $this->conn->prepare($query);
+        $this->dishes = [];
         try {
             $stmt->execute();
             $dishesData = $stmt->fetchAll();
-            $dishes = [];
             foreach ($dishesData as $d) {
                 $dish = new Dish(
-                    $d['dish_id'],
-                    $d['dish_name'],
-                    $d['dish_description'],
-                    $d['base_price'],
-                    $d['images'],
-                    $d['available'],
-                    $d['category']
+                    dish_id: $d['dish_id'],
+                    dish_name: $d['dish_name'],
+                    dish_description: $d['dish_description'],
+                    topic: $d['topic'],
+                    base_price: $d['base_price'],
+                    images: json_decode($d['images'], true),
+                    available: $d['available'],
+                    category: $d['category']
                 );
-                array_push($dishes, $dish);
+                array_push($this->dishes, $dish);
             }
             $this->db->disconnect();
-            return $dishes;
+            return $this->dishes;
         } catch (PDOException $e) {
             $this->db->disconnect();
             die('Error haciendo la consulta select: ' . $e->getMessage());

@@ -7,18 +7,20 @@ class Dish
     private ?int $dish_id;
     private string $dish_name;
     private string $dish_description;
+    private string $topic;
     private float $base_price;
-    private string $images;//encode and decode
+    private array $images;//encode and decode
     private bool $available;
     private string $category;
 
-    public function __construct(int $dish_id, string $dish_name, string $dish_description, float $base_price, array $images = [], bool $available, string $category)
+    public function __construct(int $dish_id, string $dish_name, string $dish_description, string $topic, float $base_price, array $images, bool $available, string $category)
     {
         $this->dish_id = $dish_id;
         $this->dish_name = $dish_name;
         $this->dish_description = $dish_description;
+        $this->topic = $topic;
         $this->base_price = $base_price;
-        $this->images = json_encode($images);
+        $this->images = $images;
         $this->available = $available;
         $this->category = $category;
         
@@ -87,6 +89,26 @@ class Dish
     }
 
     /**
+     * Get the value of topic
+     */ 
+    public function getTopic()
+    {
+        return $this->topic;
+    }
+
+    /**
+     * Set the value of topic
+     *
+     * @return  self
+     */ 
+    public function setTopic($topic)
+    {
+        $this->topic = $topic;
+
+        return $this;
+    }
+
+    /**
      * Get the value of base_price
      */ 
     public function getBasePrice()
@@ -119,7 +141,7 @@ class Dish
      *
      * @return  self
      */ 
-    public function setImages($images)
+    public function setImages(array $images)
     {
         $this->images = $images;
 

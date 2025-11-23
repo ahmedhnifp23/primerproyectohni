@@ -1,3 +1,3 @@
 -- Altera la tabla dishes para añadir el campo topic que podrá ser null o contener la tematica como Mar, Montaña, Vegano, Vegetariano...
 ALTER TABLE dishes
-  ADD COLUMN topic ENUM('Mar', 'Montaña', 'Vegetariano', 'Vegano', 'Otros') DEFAULT 'Otros' AFTER description;
+  ADD COLUMN topic ENUM('Mar', 'Montaña', 'Vegetariano', 'Vegano', 'Otros') DEFAULT 'Otros' AFTER dish_description;
