@@ -1,15 +1,34 @@
 <?php
-// Front controller de Thalassa
-// Todo cargar config, autoload y router
-//ECHO esta desactivado.
+// Front controller of thalassa that implements the dinamic instantiation
 
-//Imports there
-require_once __DIR__ . "/../app/controllers/DishController.php";
+//Base path
+define('BASE_PATH', __DIR__ . "/../app/controllers/");
 
-//Variable with the instance of the dish controller.
-$controller = new DishController();
+//Variable with the instance of controller.
+$controllerInstance = null;
 
-//Variables with the controller and action obtained with method GET.
-$controller = $_GET['controller'] ?? 'dish';//CAMBIAR LUEGO POR HOME
+//Variables with the controller and action obtained with method GET. By default it will show the home page.
+$controller = $_GET['controller'] ?? 'HomeController';
 $action = $_GET['action'] ?? 'index';
 
+$className = ucfirst($controller) . 'Controller';
+
+$filePath = BASE_PATH . $className . ".php";
+
+if (!file_exists($filePath)) {
+    $className = 'ErrorController';
+    $filePath = BASE_PATH . $className . ".php";
+    $action = 'error404';
+    require_once $filePath; 
+    $controllerInstance = new $className();  
+    $controllerInstance -> $action();
+} else{
+ require_once $filePath; 
+ $controllerInstance = new $className();  
+}
+
+if(method_exists($controllerInstance, $action)){
+    $controllerInstance->$action();
+} else{
+    $controllerInstance->methodNotFound($action);
+}

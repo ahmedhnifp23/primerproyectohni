@@ -60,4 +60,8 @@ class DishDAO
     public function findByCategory(string $category) {}
 
     public function findPopular() {}
+
+    public function methodNotFound(string $action){
+        echo "Method " . $action . " not found!!!";
+    }
 }
