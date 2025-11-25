@@ -1,5 +1,5 @@
 <?php
-// Front controller of thalassa that implements the dinamic instantiation
+// Front controller of thalassa website that implements the dinamic instantiation
 
 //Base path
 define('BASE_PATH', __DIR__ . "/../app/controllers/");
