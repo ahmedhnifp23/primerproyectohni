@@ -20,7 +20,6 @@ class DatabasePDO
             $this->conn = new PDO($dsn, $this->user, $this->password);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-            var_dump('Conexión con la base de datos ' . $this->dbname . ' realizada correctamente');
         } catch (PDOException $e) {
             die('Conexión fallida: ' . $e->getMessage());
         }

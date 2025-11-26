@@ -48,11 +48,52 @@ class DishDAO
 
     public function findAvailable() {}
 
-    public function findById(int $id) {}
+    public function findById(int $id) {
+        //Obtain the connection.
+        $this->conn = $this->db->getConnection();
+        //Create the query string.
+        $query = "SELECT * FROM " . $this->table . " WHERE dish_id = :id";
+        //Prepare the statement.
+        $stmt = $this->conn->prepare($query);
+        //Bind the param.
+        $stmt->bindParam(':id', $id);
+        //Try-Catch to controll the exception during the consult.
+        try{
+            $stmt->execute();
+            $dishData = $stmt->fetch();
 
-    public function create(Dish $id) {}
+            if($dishData){
+                $dish = new Dish(
+                    dish_id : $dishData['dish_id'],
+                    dish_name : $dishData['dish_name'],
+                    dish_description : $dishData['dish_description'],
+                    topic : $dishData['topic'],
+                    base_price : $dishData['base_price'],
+                    images : json_decode($dishData['images'], true),
+                    available : $dishData['available'],
+                    category : $dishData['category']
+                );
 
-    public function update(Dish $dish) {}
+            }
+            $this->db->disconnect();
+
+            return $dish->jsonSerialize();
+        } catch(PDOException $e){
+            $this->db->disconnect();
+            die("Error al intentar obtener el plato seleccionado: " . $e->getMessage());
+        }
+
+        
+    }
+
+    public function create(Dish $id) {
+        $this->conn = $this->db->getConnection();
+        
+    }
+
+    public function update(Dish $dish) {
+        //ExampleQuery = "update dishes SET topic = 1 WHERE dish_id = '3'"
+    }
 
     public function delete(int $id) {}
 
