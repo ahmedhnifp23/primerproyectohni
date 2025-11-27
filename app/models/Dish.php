@@ -26,7 +26,7 @@ class Dish
         
     }
 
-    //Function that returns an array with public properties to use it in json_encode.
+    //Function that returns an array with public properties to use it in json_encode. Returns an associative array with public properties.
     public function jsonSerialize(): array{
         return [
             'dish_id' => $this->dish_id,

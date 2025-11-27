@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 //Front controller of the API
 
@@ -8,42 +8,42 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-//Define the constant with the path of this API.
-//define(API_CONTROLLER_PATH, __DIR__ . "./../public/api.php");
+//Define the constant with the path of the API controllers.
+define('API_CONTROLLERS_PATH', __DIR__ . "/../app/http/controllers/API/");
 
-//We save in a variable the requested method.
+//Test url: http://primerproyectohni.com/?controller=api&endpoint=dish&id=3
+
+$endpoint = '';
 $method = $_SERVER['REQUEST_METHOD'];
+$controllerInstance = null;
 
-//We respond accoding to the method
-switch ($method) {
-    case 'GET':
-        if(isset($_GET['id'])){
-            $exits = false;
-            
-            
+//Check if the endpoint is set, serialize it and save it in a variable and then process the request.
+if (isset($_GET['endpoint'])) {
+    $endpoint = $_GET['endpoint'];
+    $className = 'API' . ucfirst($endpoint);
+    $filePath = API_CONTROLLERS_PATH . $className . ".php";
 
-
-        } else{
-            http_response_code(404);
-            echo json_encode([
-                'status' => 'Failed',
-                'data' => 'No data found'
-            ]);
-        }
-
-    case 'POST':
-
-        break;
-    case 'PUT':
-
-        break;
-    case 'DELETE':
-
-        break;
-    default:
-        //Method not allowed
-        http_response_code(405);
-        echo json_encode(["message" => "Method not allowed"]);
-        break;
+    if (file_exists($filePath)) {
+        require_once $filePath;
+        $controllerInstance = new $className();
+        $controllerInstance->handleRequest();
+        
+    } else {
+        http_response_code(404);
+        echo json_encode([
+            'status' => 'Failed',
+            'data' => 'Endpoint not found'
+        ]);
+        exit();
+    }
+} else {
+    http_response_code(404);
+    echo json_encode([
+        'status' => 'Failed',
+        'data' => 'No endpoint specified'
+    ]);
+    exit();
 }
+
+
 

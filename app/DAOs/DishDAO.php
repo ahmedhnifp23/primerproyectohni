@@ -2,6 +2,7 @@
 
 require_once __DIR__ . "/../core/DatabasePDO.php";
 require_once __DIR__ . "/../models/Dish.php";
+require_once __DIR__ . "/../core/JsonUtils.php";
 
 class DishDAO
 {
@@ -9,11 +10,14 @@ class DishDAO
     private $conn; //Variable where i save the connection.
     private $table = 'dishes'; //Variable with the name of the table.
     private $dishes = []; //Variable where I will save the array of dishes.
+    private $jsonUtils; //Instance of json utils.
 
     //Construct with a instance of dbPDO and model Dish.
     public function __construct()
     {
         $this->db = new DatabasePDO();
+        $this->jsonUtils = new JsonUtils();
+        
     }
 
     public function findAll()
@@ -39,7 +43,7 @@ class DishDAO
                 array_push($this->dishes, $dish);
             }
             $this->db->disconnect();
-            return $this->dishes;
+            return JsonUtils::serializeArray($this->dishes);
         } catch (PDOException $e) {
             $this->db->disconnect();
             die('Error haciendo la consulta select: ' . $e->getMessage());
@@ -77,7 +81,7 @@ class DishDAO
             }
             $this->db->disconnect();
 
-            return $dish->jsonSerialize();
+            return JsonUtils::serialize($dish);
         } catch(PDOException $e){
             $this->db->disconnect();
             die("Error al intentar obtener el plato seleccionado: " . $e->getMessage());
@@ -88,7 +92,7 @@ class DishDAO
 
     public function create(Dish $id) {
         $this->conn = $this->db->getConnection();
-        
+
     }
 
     public function update(Dish $dish) {
