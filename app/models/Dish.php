@@ -7,13 +7,13 @@ class Dish
     private ?int $dish_id;
     private string $dish_name;
     private string $dish_description;
-    private string $topic;
+    private ?string $topic;
     private float $base_price;
     private array $images;//encode and decode
     private bool $available;
     private string $category;
 
-    public function __construct(int $dish_id, string $dish_name, string $dish_description, string $topic, float $base_price, array $images, bool $available, string $category)
+    public function __construct(?int $dish_id = null, string $dish_name, string $dish_description, ?string $topic = null, float $base_price, array $images, bool $available, string $category)
     {
         $this->dish_id = $dish_id;
         $this->dish_name = $dish_name;
@@ -29,14 +29,14 @@ class Dish
     //Function that returns an array with public properties to use it in json_encode. Returns an associative array with public properties.
     public function jsonSerialize(): array{
         return [
-            'dish_id' => $this->dish_id,
-            'dish_name' => $this->dish_name,
-            'dish_description' => $this->dish_description,
-            'topic' => $this->topic,
-            'base_price' => $this->base_price,
-            'images' => $this->images,
-            'available' => $this->available,
-            'category' => $this->category
+            'dish_id' => $this->getDishId(),
+            'dish_name' => $this->getDishName(),
+            'dish_description' => $this->getDishDescription(),
+            'topic' => $this->getTopic(),
+            'base_price' => $this->getBasePrice(),
+            'images' => $this->getImages(),
+            'available' => $this->getAvailable(),
+            'category' => $this->getCategory()
         ];
     }
 

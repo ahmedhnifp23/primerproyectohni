@@ -17,7 +17,6 @@ class DishDAO
     {
         $this->db = new DatabasePDO();
         $this->jsonUtils = new JsonUtils();
-        
     }
 
     public function findAll()
@@ -43,7 +42,7 @@ class DishDAO
                 array_push($this->dishes, $dish);
             }
             $this->db->disconnect();
-            return JsonUtils::serializeArray($this->dishes);
+            return $this->dishes;
         } catch (PDOException $e) {
             $this->db->disconnect();
             die('Error haciendo la consulta select: ' . $e->getMessage());
@@ -52,7 +51,8 @@ class DishDAO
 
     public function findAvailable() {}
 
-    public function findById(int $id) {
+    public function findById(int $id)
+    {
         //Obtain the connection.
         $this->conn = $this->db->getConnection();
         //Create the query string.
@@ -62,51 +62,88 @@ class DishDAO
         //Bind the param.
         $stmt->bindParam(':id', $id);
         //Try-Catch to controll the exception during the consult.
-        try{
+        try {
             $stmt->execute();
             $dishData = $stmt->fetch();
 
-            if($dishData){
+            if ($dishData) {
                 $dish = new Dish(
-                    dish_id : $dishData['dish_id'],
-                    dish_name : $dishData['dish_name'],
-                    dish_description : $dishData['dish_description'],
-                    topic : $dishData['topic'],
-                    base_price : $dishData['base_price'],
-                    images : json_decode($dishData['images'], true),
-                    available : $dishData['available'],
-                    category : $dishData['category']
+                    dish_id: $dishData['dish_id'],
+                    dish_name: $dishData['dish_name'],
+                    dish_description: $dishData['dish_description'],
+                    topic: $dishData['topic'],
+                    base_price: $dishData['base_price'],
+                    images: json_decode($dishData['images'], true),
+                    available: $dishData['available'],
+                    category: $dishData['category']
                 );
-
             }
             $this->db->disconnect();
 
-            return JsonUtils::serialize($dish);
-        } catch(PDOException $e){
+            return $dish;
+        } catch (PDOException $e) {
             $this->db->disconnect();
-            die("Error al intentar obtener el plato seleccionado: " . $e->getMessage());
+            throw $e;
         }
-
-        
     }
 
-    public function create(Dish $id) {
+    public function create(Dish $dish)
+    {
         $this->conn = $this->db->getConnection();
+        $query = "INSERT INTO " . $this->table . "(dish_name, dish_description, topic, base_price, images, available, category) VALUES(:dish_name, :dish_description, :topic, :base_price, :images, :available, :category)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':dish_name', $dish->getDishName());
+        $stmt->bindValue(':dish_description', $dish->getDishDescription());
+        $stmt->bindValue(':topic', $dish->getTopic());
+        $stmt->bindValue(':base_price', $dish->getBasePrice());
+        $stmt->bindValue(':images', json_encode($dish->getImages()));
+        $stmt->bindValue(':available', $dish->getAvailable());
+        $stmt->bindValue(':category', $dish->getCategory());
 
+        try {
+            $stmt->execute();
+            $this->db->disconnect();
+            return $this->conn->lastInsertId(); //Return the id of the inserted dish.
+
+        } catch (PDOException $e) {
+            $this->db->disconnect();
+            throw $e;
+        }
     }
 
-    public function update(Dish $dish) {
-        //ExampleQuery = "update dishes SET topic = 1 WHERE dish_id = '3'"
+    public function update(Dish $dish)
+    {
+        $this->conn = $this->db->getConnection();
+        $query = "UPDATE " . $this->table . " SET dish_name = :dish_name, dish_description = :dish_description, topic = :topic, base_price = :base_price, images = :images, available = :available, category = :category WHERE dish_id = :dish_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':dish_id', $dish->getDishId());
+        $stmt->bindValue(':dish_name', $dish->getDishName());
+        $stmt->bindValue(':dish_description', $dish->getDishDescription());
+        $stmt->bindValue(':topic', $dish->getTopic());
+        $stmt->bindValue(':base_price', $dish->getBasePrice());
+        $stmt->bindValue(':images', json_encode($dish->getImages()));
+        $stmt->bindValue(':available', $dish->getAvailable());
+        $stmt->bindValue(':category', $dish->getCategory());
+
+        try {
+            $stmt->execute();
+            $this->db->disconnect();
+            return $stmt->rowCount();
+        } catch (PDOException $e) {
+            $this->db->disconnect();
+            throw $e;
+        }
     }
 
-    public function delete(int $id) {}
+    public function destroy(int $id) {}
 
 
     public function findByCategory(string $category) {}
 
     public function findPopular() {}
 
-    public function methodNotFound(string $action){
+    public function methodNotFound(string $action)
+    {
         echo "Method " . $action . " not found!!!";
     }
 }

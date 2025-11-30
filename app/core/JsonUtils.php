@@ -1,7 +1,7 @@
 <?php
 
 class JsonUtils {
-    public static function encode($data): string {
+    public static function encodeUnescaped($data): string {
         return json_encode($data, JSON_UNESCAPED_UNICODE);
     }
 
@@ -14,7 +14,7 @@ class JsonUtils {
     }
 
     //Function that decodes a json string to an associative array
-    public static function decode(string $json): array {
+    public static function decodeAssociative(string $json): array {
         return json_decode($json, true);
     }
 

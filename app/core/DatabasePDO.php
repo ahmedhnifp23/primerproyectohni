@@ -25,11 +25,18 @@ class DatabasePDO
         }
     }
 
-
+    public function reConnect()
+    {
+        $this->__construct();
+        return $this->conn;
+    }
 
     //Function that returns the connection.
     public function getConnection(): PDO
     {
+        if ($this->conn == null) {
+            $this->reConnect();
+        }
         return $this->conn;
     }
     //Function that closes the connection.

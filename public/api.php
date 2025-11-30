@@ -17,6 +17,9 @@ $endpoint = '';
 $method = $_SERVER['REQUEST_METHOD'];
 $controllerInstance = null;
 
+
+
+
 //Check if the endpoint is set, serialize it and save it in a variable and then process the request.
 if (isset($_GET['endpoint'])) {
     $endpoint = $_GET['endpoint'];
