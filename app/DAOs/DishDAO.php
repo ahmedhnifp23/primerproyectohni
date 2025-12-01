@@ -135,7 +135,19 @@ class DishDAO
         }
     }
 
-    public function destroy(int $id) {}
+    public function destroy(int $id) {
+        $this->conn = $this->db->getConnection();
+        $query = "DELETE FROM " . $this->table . " WHERE dish_id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':id', $id);
+        try{
+            $stmt->execute();
+            $this->db->disconnect();
+            return $stmt->rowCount();
+        } catch(PDOException $e){
+            throw $e;
+        }
+    }
 
 
     public function findByCategory(string $category) {}

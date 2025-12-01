@@ -55,10 +55,9 @@ class APIDish
                 $this->handlePutRequest();
                 break;
             case 'DELETE':
-                echo json_encode(["message" => "Method DELETE called"]);
+                $this->handleDeleteRequest();
                 break;
             default:
-                //Method not allowed
                 http_response_code(405);
                 echo json_encode(["message" => "Method not allowed"]);
                 break;
@@ -182,7 +181,6 @@ class APIDish
                         'status' => 'Success',
                         'data' => $success_message
                     ]);
-
                 } catch (Exception $e) {
                     $error_message = "Error triying to update the dish with id " . $id . " : " . $e->getMessage();
                     http_response_code(500);
@@ -204,6 +202,47 @@ class APIDish
             echo json_encode([
                 'status' => 'Failed',
                 'data' => 'No dish id received.'
+            ]);
+            return;
+        }
+    }
+
+
+    public function handleDeleteRequest()
+    {
+        if (!isset($_GET['id'])) {
+            http_response_code(400);
+            echo json_encode([
+                'status' => 'Failed',
+                'data' => 'No dish id received.'
+            ]);
+            return;
+        }
+
+        $id = $_GET['id'];
+
+        try {
+            $destroyed = $this->dishDAO->destroy($id);
+            if ($destroyed > 0) {
+                $status = 'Success';
+                $message = 'Dish with id ' . $id . ' deleted successfully';
+                $responseCode = 200;
+            } else {
+                $status = 'Failed';
+                $message = 'No dish deleted with the id ' . $id . '. Try it again please.';
+                $responseCode = 404;
+            }
+            http_response_code($responseCode);
+            echo json_encode([
+                'status' => $status,
+                'data' => $message
+            ]);
+        } catch (Exception $e) {
+            $error_message = 'Internal error trying to delte the dish with id ' . $id . ': ' . $e->getMessage();
+            http_response_code(500);
+            echo json_encode([
+                'status' => 'Failed',
+                'data' => $error_message
             ]);
             return;
         }
