@@ -14,7 +14,8 @@ class DishController {
 //Method to list all the dishes.
 public function index(){
     $dishes = $this->dishDAO->findAll();
-    require_once __DIR__ . "/../views/dishes/listDishes.php" ;
+    $view = __DIR__ . "/../views/dishes/listDishes.php";
+    require_once __DIR__ . "/../views/main.php";
 }
 
 

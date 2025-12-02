@@ -9,7 +9,7 @@ class DishDAO
     private $db; //Variable where i save the instance of the PDO.
     private $conn; //Variable where i save the connection.
     private $table = 'dishes'; //Variable with the name of the table.
-    private $dishes = []; //Variable where I will save the array of dishes.
+    private ?array $dishes; //Variable where I will save the array of dishes.
     private $jsonUtils; //Instance of json utils.
 
     //Construct with a instance of dbPDO and model Dish.
@@ -45,7 +45,7 @@ class DishDAO
             return $this->dishes;
         } catch (PDOException $e) {
             $this->db->disconnect();
-            die('Error haciendo la consulta select: ' . $e->getMessage());
+            throw $e;
         }
     }
 
