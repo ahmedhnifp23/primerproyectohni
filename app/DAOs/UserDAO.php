@@ -52,6 +52,38 @@ class UserDAO
 
     }
 
+    public function findById(int $id){
+        $this->conn = $this->db->getConnection();
+        $query = "SELECT * FROM " . $this->table . " WHERE user_id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(":id" , $id);
+
+        try{
+            $stmt->execute();
+            $usersData = $stmt->fetch();
+            if($usersData){
+                $user = new User(
+                    user_id: $usersData['user_id'],
+                    first_name: $usersData['first_name'],
+                    last_name: $usersData['last_name'],
+                    email: $usersData['email'],
+                    username: $usersData['username'],
+                    password_hash: $usersData['password_hash'],
+                    phone: $usersData['phone'],
+                    addresses: json_decode($usersData['addresses'], true),
+                    birth_date: $usersData['birth_date'],
+                    registered_at: $usersData['registered_at'],
+                    is_admin: $usersData['is_admin']
+                );
+            }
+            $this->db->disconnect();
+            return $user;
+        } catch(PDOException $e){
+            $this->db->disconnect();
+            throw $e;
+        }
+    }
+
 
 
 
