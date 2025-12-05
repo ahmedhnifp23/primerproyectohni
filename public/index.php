@@ -8,6 +8,9 @@ define('DAOS_PATH', __DIR__ . "/../app/DAOs/");
 define('VIEWS_PATH', __DIR__ . "/../app/views/");
 define('CORE_PATH', __DIR__ . "/../app/core/");
 
+//Import the Session utils and start the session.
+require_once CORE_PATH . "SessionManager.php";
+SessionManager::start();
 
 //Variable with the instance of controller.
 $controllerInstance = null;

@@ -16,14 +16,15 @@ class UserController{
 
 
     public function showRegister(){
-
+        require_once VIEWS_PATH . "/auth/register.php";
     }
     public function storeRegister(){
 
     }
 
     public function showLogin(){
-        
+        require_once VIEWS_PATH . "/auth/login.php";
+
     }
 
     public function storeLogin(){
@@ -31,7 +32,8 @@ class UserController{
     }
 
     public function logout(){
-
+        SessionManager::destroy();
+        header("Location: index.php");
     }
 
 

@@ -104,7 +104,6 @@ class DishDAO
             $stmt->execute();
             $this->db->disconnect();
             return $this->conn->lastInsertId(); //Return the id of the inserted dish.
-
         } catch (PDOException $e) {
             $this->db->disconnect();
             throw $e;
