@@ -158,7 +158,7 @@ class UserDAO
     //Function to create a new user.
     public function create(User $user){
         $this->conn = $this->db->getConnection();
-        $query = "INSERT INTO " . $this->table . " (first_name, last_name, email, username, password_hash, phone, addresses, birth_date, registered_at, is_admin) VALUES(:first_name, :last_name, :email, :username, :password_hash, :phone, :addresses, :birth_date, :registered_at, :is_admin)";
+        $query = "INSERT INTO " . $this->table . " (first_name, last_name, email, username, password_hash, phone, addresses, birth_date) VALUES(:first_name, :last_name, :email, :username, :password_hash, :phone, :addresses, :birth_date)";
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':first_name', $user->getFirstName());
         $stmt->bindValue(':last_name', $user->getLastName());
@@ -168,8 +168,6 @@ class UserDAO
         $stmt->bindValue(':phone', $user->getPhone());
         $stmt->bindValue(':addresses', json_encode($user->getAddresses()));
         $stmt->bindValue(':birth_date', $user->getBirthDate());
-        $stmt->bindValue(':registered_at', $user->getRegisteredAt());
-        $stmt->bindValue(':is_admin', $user->getIsAdmin());
 
         try{
             $stmt->execute();

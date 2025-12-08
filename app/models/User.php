@@ -14,12 +14,12 @@ class User
     private ?string $phone;
     private ?array $addresses;
     private ?string $birth_date;
-    private string $registered_at;
+    private ?string $registered_at;
     private bool $is_admin;
 
 
 
-    public function __construct(?int $user_id = null, string $first_name, ?string $last_name = null, string $email, string $username, string $password_hash, ?string $phone = null, ?array $addresses = null, ?string $birth_date = null, string $registered_at = null, bool $is_admin = false)
+    public function __construct(?int $user_id = null, string $first_name, ?string $last_name = null, string $email, string $username, string $password_hash, ?string $phone = null, ?array $addresses = null, ?string $birth_date = null, ?string $registered_at = null, bool $is_admin = false)
     {
         $this->user_id = $user_id;
         $this->first_name = $first_name;
