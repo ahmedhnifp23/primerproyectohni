@@ -12,6 +12,7 @@ class UserDAO
     private $table = 'users'; //Variable with the name of the table.
     private ?array $users; //Variable where I will save the array of users.
     private $jsonUtils; //Instance of json utils.
+    private ?User $user; //Variable to save the user.
 
     //Construct with a instance of dbPDO and model User.
     public function __construct()
@@ -64,7 +65,7 @@ class UserDAO
             $stmt->execute();
             $usersData = $stmt->fetch();
             if ($usersData) {
-                $user = new User(
+                $this->user = new User(
                     user_id: $usersData['user_id'],
                     first_name: $usersData['first_name'],
                     last_name: $usersData['last_name'],
@@ -77,9 +78,11 @@ class UserDAO
                     registered_at: $usersData['registered_at'],
                     is_admin: $usersData['is_admin']
                 );
+            } else{
+                $this->user = null;
             }
             $this->db->disconnect();
-            return $user;
+            return $this->user;
         } catch (PDOException $e) {
             $this->db->disconnect();
             throw $e;
@@ -99,7 +102,7 @@ class UserDAO
             $userData = $stmt->fetch();
 
             if ($userData) {
-                $user = new User(
+                $this->user = new User(
                     user_id: $userData['user_id'],
                     first_name: $userData['first_name'],
                     last_name: $userData['last_name'],
@@ -112,9 +115,11 @@ class UserDAO
                     registered_at: $userData['registered_at'],
                     is_admin: $userData['is_admin']
                 );
+            } else{
+                $this->user = null;
             }
             $this->db->disconnect();
-            return $user;
+            return $this->user;
         } catch (PDOException $e) {
             $this->db->disconnect();
             throw $e;
@@ -133,7 +138,7 @@ class UserDAO
             $userData = $stmt->fetch();
 
             if ($userData) {
-                $user = new User(
+                $this->user = new User(
                     user_id: $userData['user_id'],
                     first_name: $userData['first_name'],
                     last_name: $userData['last_name'],
@@ -146,9 +151,11 @@ class UserDAO
                     registered_at: $userData['registered_at'],
                     is_admin: $userData['is_admin']
                 );
+            } else{
+                $this->user = null;
             }
             $this->db->disconnect();
-            return $user;
+            return $this->user;
         } catch (PDOException $e) {
             $this->db->disconnect();
             throw $e;

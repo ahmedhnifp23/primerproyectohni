@@ -19,14 +19,13 @@ class UserController
 
     public function showRegister()
     {
-        //Verify if is dere any error stored to show it and delete it.
-        $error = SessionManager::get('error_register');
-        if ($error) SessionManager::remove('error_register');        
+
         require_once VIEWS_PATH . "/auth/register.php";
     }
     //Function that validates the data received fron the register form and creates and saves the new user.
-    public function storeRegister() {
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    public function storeRegister()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $first_name = trim($_POST['first_name']);
             $last_name_raw = trim($_POST['last_name'] ?? '');
             $last_name = $last_name_raw === '' ? null : $last_name_raw;
@@ -41,31 +40,42 @@ class UserController
             $birth_date = $birth_date_raw === '' ? null : $birth_date_raw;
 
             SessionManager::start();
-            
+
             //Validate the required fields
-            if(empty($first_name) || empty($email) || empty($username) || empty($password)){
+            if (empty($first_name) || empty($email) || empty($username) || empty($password)) {
                 SessionManager::set('error_register', 'Por favor, complete todos los campos obligatorios.');
                 header('Location: index.php?controller=user&action=showRegister');
                 exit();
-            } 
+            }
             //Validate the email.
-            if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 SessionManager::set('error_register', 'Por favor, ingrese un correo electrónico válido.');
                 header('Location: index.php?controller=user&action=showRegister');
                 exit();
             }
 
             //Check if the email or username already exists.
-            if($this->userDAO->findByEmail($email)){
+            if ($this->userDAO->findByEmail($email)) {
                 SessionManager::set('error_register', 'El correo electrónico ya está en uso. Por favor, elija otro.');
                 header('Location: index.php?controller=user&action=showRegister');
                 exit();
             }
-            if($this->userDAO->findByUsername($username)){
+            if ($this->userDAO->findByUsername($username)) {
                 SessionManager::set('error_register', 'El nombre de usuario ya está en uso. Por favor, elija otro.');
                 header('Location: index.php?controller=user&action=showRegister');
                 exit();
             }
+            //HardCoded array of addresses to implement later
+            $hardcodedAddresses = [
+                [
+                    'street' => 'Calle Falsa 123',
+                    'city' => 'Registerland',
+                    'state' => 'CAT',
+                    'zip' => '08759',
+                    'country' => 'España'
+                ]
+            ];
+
             //Create a new user instance
             $newUser = new User(
                 first_name: $first_name,
@@ -74,28 +84,27 @@ class UserController
                 username: $username,
                 password_hash: $password_hash,
                 phone: $phone,
+                addresses: $hardcodedAddresses,
                 birth_date: $birth_date
             );
 
             //Try to save the user in the db
-            try{
+            try {
                 $this->userDAO->create($newUser);
                 SessionManager::set('success_register', 'Usuario registrado con éxito. Ahora puede iniciar sesión.');
                 header('Location: index.php?controller=user&action=showLogin');
                 exit();
-
-            } catch(Exception $e){
+            } catch (Exception $e) {
                 SessionManager::set('error_register', 'Error al registrar el usuario: ' . $e->getMessage());
                 header('Location: index.php?controller=user&action=showRegister');
                 exit();
             }
-
         }
     }
 
     public function showLogin()
     {
-       /* //Verify if is dere any error stored to show it and delete it.
+        /* //Verify if is dere any error stored to show it and delete it.
         $error = SessionManager::get('error_login');
         if ($error) SessionManager::remove('error_login');
         //The same if the user comes from a succesfull register.
