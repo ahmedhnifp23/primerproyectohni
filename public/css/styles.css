@@ -1,0 +1,32 @@
+/*Login styles*/
+.login-wrapper {        
+    background-color: #296ACE;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.login-card {
+    background-color: white;
+    width: 450px;
+    min-height: 470px;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.btn-thalassa {
+    background-color: #296ACE;
+    color: white;
+    font-weight: 600;
+}
+
+.btn-thalassa:hover {
+    background-color: #1e54a8;
+    color: white;
+}
+
+/*Register styles*/
+.register-wrapper {     /** Register wrapper that will act like the body */
+    background-color: #296ACE;
+    min-height: 100vh;
+    width: 100%;
+}

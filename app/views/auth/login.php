@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 $modalTitle = "";
 $modalBody = "";
-$modalType = ""; 
+$modalType = "";
 $showModal = false;
 
 if ($error = SessionManager::get('error_login')) {
@@ -14,9 +14,7 @@ if ($error = SessionManager::get('error_login')) {
     $modalType = "danger";
     $showModal = true;
     SessionManager::remove('error_login');
-} 
-
-elseif ($success = SessionManager::get('success_register')) {
+} elseif ($success = SessionManager::get('success_register')) {
     $modalTitle = "¡Registro Exitoso!";
     $modalBody = $success;
     $modalType = "success";
@@ -25,42 +23,13 @@ elseif ($success = SessionManager::get('success_register')) {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="es">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thalassa Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #296ACE;
-            height: 100vh;
-        }
-        .login-card {
-            background-color: white;
-            width: 450px;
-            min-height: 470px;
-            border-radius: 12px !important;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-        .btn-thalassa {
-            background-color: #296ACE;
-            color: white;
-            font-weight: 600;
-        }
-        .btn-thalassa:hover {
-            background-color: #1e54a8;
-            color: white;
-        }
-    </style>
-</head>
 
-<body class="container d-flex justify-content-center align-items-center">
 
+
+<div class="login-wrapper d-flex justify-content-center align-items-center">
     <div class="login-card card p-4 d-flex flex-column justify-content-center">
-        
+
         <div class="text-center mb-4">
             <h2 class="fw-bold text-primary">Thalassa</h2>
             <p class="text-muted">Bienvenido de nuevo</p>
@@ -105,8 +74,7 @@ elseif ($success = SessionManager::get('success_register')) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-   <script>
-
+    <script>
         const shouldShowModal = <?= json_encode($showModal) ?>;
 
         if (shouldShowModal) {
@@ -117,5 +85,4 @@ elseif ($success = SessionManager::get('success_register')) {
         }
     </script>
 
-</body>
-</html>
+</div>

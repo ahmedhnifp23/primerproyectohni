@@ -20,7 +20,8 @@ class UserController
     public function showRegister()
     {
 
-        require_once VIEWS_PATH . "/auth/register.php";
+        $view = VIEWS_PATH . "/auth/register.php";
+        require_once __DIR__ . "/../views/main.php";
     }
     //Function that validates the data received fron the register form and creates and saves the new user.
     public function storeRegister()
@@ -111,7 +112,8 @@ class UserController
         $success = SessionManager::get('success_register');
         if ($success) SessionManager::remove('success_register');*/
 
-        require_once VIEWS_PATH . "/auth/login.php";
+        $view = VIEWS_PATH . "/auth/login.php";
+        require_once __DIR__ . "/../views/main.php";
     }
 
     public function storeLogin()
