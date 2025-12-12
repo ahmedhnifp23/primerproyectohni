@@ -151,6 +151,36 @@ class DishDAO
 
     public function findByCategory(string $category) {}
 
+    public function findByTopic(string $category) {
+        $this->conn = $this->db->getConnection();
+        $query = "SELECT * FROM " . $this->table . " WHERE topic = :topic";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':topic', $category);
+        $dishesByTopic = [];
+        try {
+            $stmt->execute();
+            $dishesData = $stmt->fetchAll();
+            foreach ($dishesData as $d) {
+                $dish = new Dish(
+                    dish_id: $d['dish_id'],
+                    dish_name: $d['dish_name'],
+                    dish_description: $d['dish_description'],
+                    topic: $d['topic'],
+                    base_price: $d['base_price'],
+                    images: json_decode($d['images'], true),
+                    available: $d['available'],
+                    category: $d['category']
+                );
+                array_push($dishesByTopic, $dish);
+            }
+            $this->db->disconnect();
+            return $dishesByTopic;
+        } catch (PDOException $e) {
+            $this->db->disconnect();
+            throw $e;
+        }
+    }
+
     public function findPopular() {}
 
     public function methodNotFound(string $action)

@@ -1,9 +1,9 @@
-<div class="announcement-bar">
-    <div class="announcement-block">
-        <span class="announcement-item">2x1 en pizzas!!</span>
-        <span class="announcement-item">Productos de km 0</span>
-        <span class="announcement-item">Saborea la esencia mediterranea</span>
-
+<div class="announcement-bar text-white">
+    <div class="container">
+        <div class="announcement-slide d-flex align-items-center">
+            <div class="announcement-item">
+                <i class="bi bi-stars me-2"></i>
+                <span class="announcement-item">Saborea la esencia mediterranea</span>
+            </div>
+        </div>
     </div>
-
-</div>

@@ -1,3 +1,11 @@
+/* Styles for announcement slider */
+.announcement-bar {
+    background-color: #1e54a8;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+}
+
 /*Login styles*/
 .login-wrapper {        
     background-color: #296ACE;
@@ -14,14 +22,13 @@
 }
 
 .btn-thalassa {
-    background-color: #296ACE;
-    color: white;
+
     font-weight: 600;
 }
 
 .btn-thalassa:hover {
     background-color: #1e54a8;
-    color: white;
+    color: #1e54a8;
 }
 
 /*Register styles*/
