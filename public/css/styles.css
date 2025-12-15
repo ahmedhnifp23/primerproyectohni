@@ -1,9 +1,27 @@
 /* Styles for announcement slider */
 .announcement-bar {
-    background-color: #1e54a8;
-    overflow: hidden;
-    white-space: nowrap;
-    position: relative;
+    background-color: #274f68;
+    padding: 10px 0;
+}
+.announcement-track{
+        background-color: #274f68;
+        width: 200%;
+        animation: announcement-slider 20s linear infinite;
+}
+@keyframes announcement-slider{
+    from {
+        transform: translateX(-40%);
+    } 
+    to{
+        transform: translateX(0%);
+    }
+}
+.announcement-track:hover{
+    animation-play-state: paused;
+}
+.announcement-item{
+    font-weight: bold;
+    color: white;
 }
 
 /*Login styles*/

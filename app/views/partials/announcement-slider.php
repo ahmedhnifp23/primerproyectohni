@@ -1,9 +1,23 @@
-<div class="announcement-bar text-white">
-    <div class="container">
-        <div class="announcement-slide d-flex align-items-center">
-            <div class="announcement-item">
-                <i class="bi bi-stars me-2"></i>
-                <span class="announcement-item">Saborea la esencia mediterranea</span>
-            </div>
+<div class="announcement-bar text-white overflow-hidden">
+    <div class="announcement-track d-flex align-items-center">
+        <div class="announcement-item mx-4 text-nowrap">
+            <i class="bi bi-truck me-2"></i> Envio Gratuito
+        </div>
+        <div class="announcement-item mx-4 text-nowrap">
+            <i class="bi bi-heart me-2"></i> Esencia Mediterránea
+        </div>
+        <div class="announcement-item mx-4 text-nowrap">
+            <i class="bi bi-stars me-2"></i> Novedades
+        </div>
+
+        <div class="announcement-item mx-4 text-nowrap">
+            <i class="bi bi-truck me-2"></i> Envío Gratuito
+        </div>
+        <div class="announcement-item mx-4 text-nowrap">
+            <i class="bi bi-heart me-2"></i> Esencia Mediterránea
+        </div>
+        <div class="announcement-item mx-4 text-nowrap">
+            <i class="bi bi-stars me-2"></i> Novedades
         </div>
     </div>
+</div>
