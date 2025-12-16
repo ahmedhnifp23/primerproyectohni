@@ -24,7 +24,7 @@
     } ?>
 
     <?php if ($showLayout) require_once VIEWS_PATH . "partials/announcement-slider.php"; ?>
-    <?php if ($showLayout) require_once VIEWS_PATH . "partials/header.php"; ?>
+    <?php if ($showLayout) require_once VIEWS_PATH . "partials/navbar.php"; ?>
 
 
     <?php if (isset($view) && file_exists($view)) {
