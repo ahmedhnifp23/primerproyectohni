@@ -1,31 +1,54 @@
+/* General Styles */
+body {
+    background-color: #EAE0D2;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+
 /* Styles for announcement slider */
 .announcement-bar {
     background-color: #274f68;
     padding: 10px 0;
 }
-.announcement-track{
-        background-color: #274f68;
-        width: 200%;
-        animation: announcement-slider 20s linear infinite;
+
+.announcement-track {
+    background-color: #274f68;
+    width: 200%;
+    animation: announcement-slider 20s linear infinite;
 }
-@keyframes announcement-slider{
+
+@keyframes announcement-slider {
     from {
         transform: translateX(-10%);
-    } 
-    to{
+    }
+
+    to {
         transform: translateX(0%);
     }
 }
-.announcement-track:hover{
+
+.announcement-track:hover {
     animation-play-state: paused;
 }
-.announcement-item{
+
+.announcement-item {
     font-weight: bold;
     color: white;
 }
 
+/* Navbar styles */
+.navbar-custom {
+    background-color: #EAE0D2;
+}
+
+#mobileMenu {
+    background-color: #EAE0D2;
+}
+
 /*Login styles*/
-.login-wrapper {        
+.login-wrapper {
     background-color: #296ACE;
     min-height: 100vh;
     width: 100%;
@@ -50,7 +73,8 @@
 }
 
 /*Register styles*/
-.register-wrapper {     /** Register wrapper that will act like the body */
+.register-wrapper {
+    /** Register wrapper that will act like the body */
     background-color: #296ACE;
     min-height: 100vh;
     width: 100%;
