@@ -1,5 +1,5 @@
-<nav class="container-fluid navbar navbar-expand-lg">
-    <div class="d-flex justify-content-around">
+<nav class="navbar navbar-expand-lg bg-beige py-3 sticky-top">
+    <div class="container-fluid px-4">
 
         <!--Toggler for mobile view-->
         <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -7,11 +7,13 @@
         </button>
 
         <!--Logo of Thalassa-->
-        <a class="navbar-brand mx-auto mx-lg-0" href="index.php">Thalassa Logo</a>
+        <a class="navbar-brand mx-auto mx-lg-0" href="index.php">
+            <img src="/assets/brand_logo/logo_mejorado_HQ.svg" alt="Thalassa Logo" class="navbar-logo">
+        </a>
 
-        <div class="collapse navbar-collapse d-none d-lg-flex" id="navbarResponsive">
+        <div class="collapse navbar-collapse" id="navbarResponsive">
             <!--Nabvar links-->
-            <ul class="navbar-nav">
+            <ul class="navbar-nav ms-auto">
                 <li class="nav-item active">
                     <a class="nav-link" href="index.php?controller=novedades&action=index">NOVEDADES</a>
                 </li>
@@ -34,10 +36,16 @@
         </div>
 
         <!--Navbar icons-->
-        <div class="d-flex gap-3">
-            <a href="index.php?controller=search&action=index"><i class="bi bi-search"></i></a>
-            <a href="index.php?controller=user&action=profile"><i class="bi bi-person"></i></a>
-            <a href="index.php?controller=cart&action=viewCart"><i class="bi bi-bag"></i></a>
+        <div class="d-flex gap-1 ms-4 align-items-center">
+            <a href="index.php?controller=search&action=index">
+                <img src="/assets/icons/search_icon.svg" alt="Search Icon" class="navbar-icon">
+            </a>
+            <a href="index.php?controller=user&action=profile">
+                <img src="/assets/icons/user_icon.svg" alt="User Icon" class="navbar-icon d-none d-md-flex">
+            </a>
+            <a href="index.php?controller=cart&action=viewCart">
+                <img src="/assets/icons/cart_icon.svg" alt="Cart Icon" class="navbar-icon">
+            </a>
         </div>
 
     </div>
@@ -46,23 +54,25 @@
 <!--Offcanvas for mobile view-->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" aria-labelledby="Offcanvas Navbar">
     <div class="offcanvas-header">
-        <a class="navbar-brand" href="index.php">Thalassa Logo</a>
+        <a class="navbar-brand offcanvas-brand" href="index.php">
+            <img src="/assets/brand_logo/logo_mejorado_HQ.svg" alt="Thalassa Logo" class="navbar-logo">
+        </a>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body">
-        <ul class="nav flex-column">
+        <ul class="nav flex-column list-unstyled">
             <li class="nav-item active">
                 <a class="nav-link" href="index.php?controller=novedades&action=index">NOVEDADES</a>
             </li>
             <!--Dropdown for the cart section-->
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">CARTA</a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenu">
-                    <a class="dropdown-item" href="">Ensaladas</a>
-                    <a class="dropdown-item" href="">Entrantes</a>
-                    <a class="dropdown-item" href="">Principales</a>
-                    <a class="dropdown-item" href="">Postres</a>
-                    <a class="dropdown-item" href="">Bebidas</a>
+                <a class="nav-link d-flex justify-content-between align-items-center" href="#submenuCollapsed" id="navbarCollapsedMenu" data-bs-toggle="collapse" aria-haspopup="true" aria-expanded="false">CARTA<span class="toggle-icon"></span></a>
+                <div class="collapse" aria-labelledby="navbarCollapsedMenu" id="submenuCollapsed">
+                    <a class="nav-link" href="">Ensaladas</a>
+                    <a class="nav-link" href="">Entrantes</a>
+                    <a class="nav-link" href="">Principales</a>
+                    <a class="nav-link" href="">Postres</a>
+                    <a class="nav-link" href="">Bebidas</a>
                 </div>
             </li>
             <li class="nav-item">
@@ -70,7 +80,7 @@
             </li>
         </ul>
         <br>
-        
+
         <ul class="nav flex-column">
             <li class="nav-item"><a class="nav-link" href="index.php?controller=user&action=showLogin">Iniciar sesión</a></li>
             <li class="nav-item"><a class="nav-link" href="index.php?controller=user&action=showRegister">Crear una cuenta</a></li>

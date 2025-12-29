@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+  <title>Icono de Carrito de Compra</title>
+  
+  <path d="M48 66h126l-12 72H54" 
+        stroke="currentColor" 
+        stroke-width="12" 
+        fill="none" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+        
+  <path d="M42 66V42" 
+        stroke="currentColor" 
+        stroke-width="12" 
+        fill="none" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+        
+  <circle cx="66" cy="156" r="6" fill="currentColor"/>
+  <circle cx="144" cy="156" r="6" fill="currentColor"/>
+  
+  <path d="M126 66h24" 
+        stroke="currentColor" 
+        stroke-width="12" 
+        fill="none" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+        
+  </svg>
