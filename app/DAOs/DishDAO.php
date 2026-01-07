@@ -1,8 +1,9 @@
 <?php
 
-require_once __DIR__ . "/../core/DatabasePDO.php";
-require_once __DIR__ . "/../models/Dish.php";
-require_once __DIR__ . "/../core/JsonUtils.php";
+require_once CORE_PATH. "DatabasePDO.php";
+require_once MODELS_PATH . "Dish.php";
+require_once CORE_PATH . "JsonUtils.php";
+require_once CORE_PATH . "SessionManager.php";
 
 class DishDAO
 {
@@ -19,6 +20,20 @@ class DishDAO
         $this->jsonUtils = new JsonUtils();
     }
 
+    //Function to set the current_user_id session variable in the database. That will be used by the triggers.
+    private function setSessionUserId()
+    {
+        SessionManager::start();
+        $userId = SessionManager::get('user_id');
+        if ($userId) {
+            $sql = "SET @current_user_id = :user_id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindValue(':user_id', $userId);
+            $stmt->execute();
+        }
+    }
+
+    //Function to find all dishes
     public function findAll()
     {
         $this->conn = $this->db->getConnection();
@@ -87,9 +102,11 @@ class DishDAO
         }
     }
 
+    //Function that creates a new dish
     public function create(Dish $dish)
     {
         $this->conn = $this->db->getConnection();
+        $this->setSessionUserId(); 
         $query = "INSERT INTO " . $this->table . "(dish_name, dish_description, topic, base_price, images, available, category) VALUES(:dish_name, :dish_description, :topic, :base_price, :images, :available, :category)";
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':dish_name', $dish->getDishName());
@@ -110,9 +127,11 @@ class DishDAO
         }
     }
 
+    //Function that updates a dish
     public function update(Dish $dish)
     {
         $this->conn = $this->db->getConnection();
+        $this->setSessionUserId(); 
         $query = "UPDATE " . $this->table . " SET dish_name = :dish_name, dish_description = :dish_description, topic = :topic, base_price = :base_price, images = :images, available = :available, category = :category WHERE dish_id = :dish_id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':dish_id', $dish->getDishId());
@@ -121,7 +140,7 @@ class DishDAO
         $stmt->bindValue(':topic', $dish->getTopic());
         $stmt->bindValue(':base_price', $dish->getBasePrice());
         $stmt->bindValue(':images', json_encode($dish->getImages()));
-        $stmt->bindValue(':available', $dish->getAvailable());
+        $stmt->bindValue(':available', (int)$dish->getAvailable(), PDO::PARAM_INT);
         $stmt->bindValue(':category', $dish->getCategory());
 
         try {
@@ -136,6 +155,7 @@ class DishDAO
 
     public function destroy(int $id) {
         $this->conn = $this->db->getConnection();
+        $this->setSessionUserId(); 
         $query = "DELETE FROM " . $this->table . " WHERE dish_id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':id', $id);
@@ -148,14 +168,42 @@ class DishDAO
         }
     }
 
-
-    public function findByCategory(string $category) {}
-
-    public function findByTopic(string $category) {
+    //Function to find dishes by category
+    public function findByCategory(string $category) {
         $this->conn = $this->db->getConnection();
-        $query = "SELECT * FROM " . $this->table . " WHERE topic = :topic";
+        $query = "SELECT * FROM " . $this->table . " WHERE category = :category and available = 1";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':topic', $category);
+        $stmt->bindValue(':category', $category);
+        $dishesByCategory = [];
+        try {
+            $stmt->execute();
+            $dishesData = $stmt->fetchAll();
+            foreach ($dishesData as $d) {
+                $dish = new Dish(
+                    dish_id: $d['dish_id'],
+                    dish_name: $d['dish_name'],
+                    dish_description: $d['dish_description'],
+                    topic: $d['topic'],
+                    base_price: $d['base_price'],
+                    images: json_decode($d['images'], true),
+                    available: $d['available'],
+                    category: $d['category']
+                );
+                array_push($dishesByCategory, $dish);
+            }
+            $this->db->disconnect();
+            return $dishesByCategory;
+        } catch (PDOException $e) {
+            $this->db->disconnect();
+            throw $e;
+        }
+    }
+    //Function to find dishes by topic
+    public function findByTopic(string $topic) {
+        $this->conn = $this->db->getConnection();
+        $query = "SELECT * FROM " . $this->table . " WHERE topic = :topic and available = 1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':topic', $topic);
         $dishesByTopic = [];
         try {
             $stmt->execute();
@@ -181,6 +229,8 @@ class DishDAO
         }
     }
 
+
+    //To be implemented...
     public function findPopular() {}
 
     public function methodNotFound(string $action)

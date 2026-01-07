@@ -5,7 +5,7 @@
 //Define the raw HTTP headers for the clients, allowing any origin, the defined methods and content type.
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 //Define the constant with the path of the API controllers.
@@ -17,7 +17,11 @@ $endpoint = '';
 $method = $_SERVER['REQUEST_METHOD'];
 $controllerInstance = null;
 
-
+//If the request method is OPTIONS we just respond with 200 OK and exit.
+if ($method == 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
 
 //Check if the endpoint is set, serialize it and save it in a variable and then process the request.

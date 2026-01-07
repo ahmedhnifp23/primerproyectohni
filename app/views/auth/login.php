@@ -23,39 +23,38 @@ if ($error = SessionManager::get('error_login')) {
 }
 ?>
 
-
-
-
-
 <div class="login-wrapper d-flex justify-content-center align-items-center">
     <div class="login-card card p-4 d-flex flex-column justify-content-center">
 
         <div class="text-center mb-4">
-            <h2 class="fw-bold text-primary">Thalassa</h2>
-            <p class="text-muted">Bienvenido de nuevo</p>
+            <a href="index.php">
+                <img src="/assets/brand_logo/logo_mejorado_HQ.svg" alt="Thalassa Logo" class="navbar-logo">
+            </a>
+            <p class="body-text-regular text-primary">¡Bienvenido de nuevo!</p>
         </div>
 
         <form action="index.php?controller=user&action=storeLogin" method="POST">
             <div class="mb-3">
-                <label for="email" class="form-label fw-semibold">Correo Electrónico</label>
-                <input type="email" class="form-control form-control-lg" id="email" name="email" placeholder="usuario@ejemplo.com" required>
+                <label for="email" class="form-label h5-bold text-primary">Correo Electrónico</label>
+                <input type="email" class="form-control form-control-lg input-thalassa" id="email" name="email" placeholder="usuario@ejemplo.com" required>
             </div>
 
             <div class="mb-4">
-                <label for="password" class="form-label fw-semibold">Contraseña</label>
-                <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="********" required>
+                <label for="password" class="form-label h5-bold text-primary">Contraseña</label>
+                <input type="password" class="form-control form-control-lg input-thalassa" id="password" name="password" placeholder="********" required>
             </div>
 
             <button type="submit" class="btn btn-thalassa btn-lg w-100 mb-3">Iniciar Sesión</button>
         </form>
 
         <div class="text-center mt-2">
-            <span class="text-muted">¿No tienes cuenta?</span>
-            <a href="index.php?controller=user&action=showRegister" class="text-primary text-decoration-none fw-bold">Regístrate aquí</a>
+            <span class="body-text-regular text-primary">¿No tienes cuenta?</span>
+            <a href="index.php?controller=user&action=showRegister" class="text-primary text-decoration-none h5-bold">Regístrate aquí</a>
         </div>
     </div>
 
-    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <!--Modal to show error or succes in login-->
+    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true" data-show="<?= $showModal ? 'true' : 'false' ?>">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-<?= $modalType ?> text-white">
@@ -72,17 +71,17 @@ if ($error = SessionManager::get('error_login')) {
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        const shouldShowModal = <?= json_encode($showModal) ?>;
-
-        if (shouldShowModal) {
-            document.addEventListener('DOMContentLoaded', function() {
-                var myModal = new bootstrap.Modal(document.getElementById('messageModal'));
+        document.addEventListener('DOMContentLoaded', function() {
+            const modalEl = document.getElementById('messageModal');
+            
+            //Read data-show attribute and if its true show the modal
+            if (modalEl && modalEl.dataset.show === 'true') {
+                var myModal = new bootstrap.Modal(modalEl);
                 myModal.show();
-            });
-        }
+            }
+        });
     </script>
 
 </div>

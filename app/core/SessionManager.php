@@ -44,17 +44,39 @@ class SessionManager
 
         self::start();
         if (!self::exists('user_id')) {
-            header('Location: /index.php');
+            header('Location: index.php?controller=user&action=showLogin');
         }
     }
 
-    /*
-//Function to verify if the user_id is looged as an admin.
-public static function requireAdmin(){
-    self::requireLogin();
+    //Function to redirect to user configure or admin configure based on the user type.
+    public static function redirectBasedOnRole()
+    {
+        self::requireLogin();
 
-    if(!isset($_SESSION['user_id']['is_admin'])){
-        header('Location: /index.php?controller=forbidden&action=show');
+        
+        if (self::get('is_admin')) {
+            header('Location: /index.php?controller=admin&action=index');
+        } else {
+            header('Location: /index.php?controller=user&action=showConfigure');
+        }
     }
-}*/
+
+
+    //Function to verify if the user_id is looged as an admin to call the api
+    public static function requireAdmin()
+    {
+        self::start();
+        if(!self::exists('user_id')){
+            http_response_code(401);
+            echo json_encode(['error' => 'Login requerido!']);
+            exit();
+        }
+
+        if(!self::get('is_admin')){
+            http_response_code(403);
+            echo json_encode(['error' => 'Acceso denegado. Se requieren privilegios de administrador.']);
+            exit();
+        }
+        
+    }
 }

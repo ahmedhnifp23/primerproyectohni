@@ -149,6 +149,16 @@ class Dish
     {
         return $this->images;
     }
+    //Get only the images paths
+    public function getImagePaths()
+    {
+        $imagesArray= $this->images;
+        $pathsOnly = array_map(function($img) {
+            return $img['path'];
+        }, $imagesArray);   
+        
+        return json_encode($pathsOnly);
+    }
 
     /**
      * Set the value of images

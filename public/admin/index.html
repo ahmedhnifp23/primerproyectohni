@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel de Administración - Thalassa</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"
+    />
+  </head>
+  <body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm mb-4">
+      <div class="container">
+        <a class="d-flex align-items-center w-100" href="/index.php">
+          <img
+            src="/assets/brand_logo/logo_mejorado_blanco_HQ.svg"
+            alt="Thalassa Logo"
+            class="w-25 h-auto"
+          />
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/index.php">Tienda</a>
+            </li>
+          </ul>
+
+          <ul class="navbar-nav mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a
+                class="nav-link active nav-spa-link"
+                href="#"
+                id="btn-nav-platos"
+                data-target="section-platos"
+                >Platos</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link nav-spa-link"
+                href="#"
+                id="btn-nav-pedidos"
+                data-target="section-pedidos"
+                >Pedidos</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link nav-spa-link"
+                href="#"
+                id="btn-nav-logs"
+                data-target="section-logs"
+                >Logs</a
+              >
+            </li>
+          </ul>
+
+          <ul class="navbar-nav ms-3">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle bg-white text-primary rounded-circle px-3"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                <i class="bi bi-person-fill"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a
+                    class="dropdown-item text-danger"
+                    href="/index.php?controller=user&action=logout"
+                    >Cerrar Sesión</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main
+      class="container bg-white p-4 rounded shadow-sm"
+      style="min-height: 600px"
+    >
+      <section id="section-platos" class="admin-section">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="text-primary">
+            <i class="bi bi-journal-bookmark-fill"></i> Gestión de Platos
+          </h2>
+          <button
+            class="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#modalDishForm"
+            id="btnCreateDish"
+          >
+            <i class="bi bi-plus-lg"></i> Nuevo Plato
+          </button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Categoría</th>
+                <th scope="col" class="text-center">Disponible</th>
+                <th scope="col" class="text-end">Precio</th>
+                <th scope="col" class="text-end">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="dishes-table-body">
+              <tr>
+                <td colspan="7" class="text-center py-4">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="section-pedidos" class="admin-section" style="display: none">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="text-primary">
+            <i class="bi bi-receipt"></i> Gestión de Pedidos
+          </h2>
+          <button
+            class="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#modalOrderForm"
+            id="btnCreateOrder"
+          >
+            <i class="bi bi-plus-lg"></i> Nuevo Pedido
+          </button>
+        </div>
+
+        <!-- Filters for Orders -->
+        <div class="row g-3 mb-4 p-3 bg-light rounded border">
+          <div class="col-md-4">
+            <label for="filter-user-id" class="form-label"
+              >Filtrar por User ID</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="filter-user-id"
+              placeholder="Ej: 15"
+            />
+          </div>
+          <div class="col-md-4">
+            <label for="filter-ordered-at" class="form-label"
+              >Filtrar por Fecha</label
+            >
+            <input
+              type="date"
+              class="form-control"
+              id="filter-ordered-at"
+              placeholder="Ej: 2026-01-06"
+            />
+          </div>
+          <div class="col-md-4">
+            <label for="filter-total-amount" class="form-label"
+              >Filtrar por Importe(€)</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="filter-total-amount"
+              placeholder="Ej: 43.98"
+            />
+          </div>
+        </div>
+
+        <!-- Currency Toggle -->
+        <div class="row mb-4">
+          <div class="col-md-3">
+            <div
+              class="form-check form-switch p-3 bg-light rounded border d-flex align-items-center justify-content-between"
+            >
+              <label class="form-check-label fw-bold" for="currencyToggle"
+                >Cambiar divisa (EUR/USD)</label
+              >
+              <input
+                class="form-check-input ms-3"
+                type="checkbox"
+                role="switch"
+                id="currencyToggle"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Usuario</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Estado</th>
+                <th scope="col" class="text-end">Total</th>
+                <th scope="col" class="text-end">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="orders-table-body">
+              <tr>
+                <td colspan="6" class="text-center py-4">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <!-- Logs Section -->
+      <section id="section-logs" class="admin-section" style="display: none">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="text-primary">
+            <i class="bi bi-clock-history"></i> Logs del Sistema
+          </h2>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Usuario ID</th>
+                <th scope="col">Acción</th>
+                <th scope="col">Tabla</th>
+                <th scope="col">Fecha</th>
+              </tr>
+            </thead>
+            <tbody id="logs-table-body">
+              <tr>
+                <td colspan="5" class="text-center py-4">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <!--Modal for deleting an order-->
+    <div
+      class="modal fade"
+      id="modalDeleteOrder"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title">Confirmar Eliminación</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              ¿Estás seguro de que deseas eliminar el pedido
+              <strong id="delete-order-id"></strong>?
+            </p>
+            <p class="text-danger small mb-0">
+              Esta acción no se puede deshacer.
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              id="btnConfirmDeleteOrder"
+            >
+              Eliminar Pedido
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Modal for creating/editing an order-->
+    <div
+      class="modal fade"
+      id="modalOrderForm"
+      tabindex="-1"
+      aria-hidden="true"
+      data-bs-backdrop="static"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="modalOrderTitle">Gestión de Pedido</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="formOrder" class="row g-3">
+              <input type="hidden" id="order_id" name="order_id" />
+
+              <div class="col-md-6">
+                <label for="user_id" class="form-label">ID Usuario</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="user_id"
+                  name="user_id"
+                  required
+                />
+              </div>
+
+              <div class="col-md-6">
+                <label for="order_status" class="form-label">Estado</label>
+                <select
+                  class="form-select"
+                  id="order_status"
+                  name="order_status"
+                >
+                  <option value="1">Pagado</option>
+                  <option value="2">Pagado y Enviado</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label for="total_amount" class="form-label">Total (€)</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  class="form-control"
+                  id="total_amount"
+                  name="total_amount"
+                  required
+                />
+              </div>
+
+              <div class="col-md-6">
+                <label for="ordered_at" class="form-label">Fecha Pedido</label>
+                <input
+                  type="datetime-local"
+                  class="form-control"
+                  id="ordered_at"
+                  name="ordered_at"
+                  required
+                />
+              </div>
+
+              <div class="col-md-6">
+                <label for="discount_id" class="form-label"
+                  >ID Descuento (Opcional)</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="discount_id"
+                  name="discount_id"
+                />
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Dirección de Entrega</label>
+                <div class="row g-2">
+                  <div class="col-md-5">
+                    <label for="addr_street" class="form-label small text-muted"
+                      >Calle</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="addr_street"
+                      placeholder="Calle/Avenida"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-2">
+                    <label
+                      for="addr_apartment"
+                      class="form-label small text-muted"
+                      >Piso/Nº</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="addr_apartment"
+                      placeholder="70"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-5">
+                    <label for="addr_city" class="form-label small text-muted"
+                      >Ciudad</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="addr_city"
+                      placeholder="Ciudad"
+                      required
+                    />
+                  </div>
+
+                  <div class="col-md-4">
+                    <label
+                      for="addr_province"
+                      class="form-label small text-muted"
+                      >Provincia</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="addr_province"
+                      placeholder="Provincia"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-3">
+                    <label for="addr_zip" class="form-label small text-muted"
+                      >C.P.</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="addr_zip"
+                      placeholder="CP"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-5">
+                    <label
+                      for="addr_country"
+                      class="form-label small text-muted"
+                      >País</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="addr_country"
+                      placeholder="País"
+                      required
+                    />
+                  </div>
+                </div>
+                <!-- Hidden input not strictly needed since we constructs FormData manually or modify it -->
+              </div>
+
+              <div class="col-12">
+                <label for="notes" class="form-label">Notas</label>
+                <textarea
+                  class="form-control"
+                  id="notes"
+                  name="notes"
+                  rows="2"
+                ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer bg-light">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              form="formOrder"
+              class="btn btn-primary"
+              id="btnSaveOrder"
+            >
+              Guardar Pedido
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Modal for deleting a dish-->
+    <div
+      class="modal fade"
+      id="modalDeleteDish"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title">Confirmar Eliminación</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              ¿Estás seguro de que deseas eliminar el plato
+              <strong id="delete-dish-name"></strong>?
+            </p>
+            <p class="text-danger small mb-0">
+              Esta acción no se puede deshacer.
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-danger" id="btnConfirmDelete">
+              Eliminar Plato
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Modal for creating/editing a dish-->
+    <div
+      class="modal fade"
+      id="modalDishForm"
+      tabindex="-1"
+      aria-hidden="true"
+      data-bs-backdrop="static"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="modalDishTitle">Gestión de Plato</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="formDish" class="row g-3">
+              <input type="hidden" id="dish_id" name="dish_id" />
+              <input
+                type="hidden"
+                id="deleted_images"
+                name="deleted_images"
+                value="[]"
+              />
+
+              <div class="col-md-8">
+                <label for="dish_name" class="form-label"
+                  >Nombre del Plato</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="dish_name"
+                  name="dish_name"
+                  required
+                />
+              </div>
+
+              <div class="col-md-4">
+                <label for="base_price" class="form-label">Precio (€)</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="base_price"
+                  name="base_price"
+                  step="0.01"
+                  min="0"
+                  required
+                />
+              </div>
+
+              <div class="col-12">
+                <label for="dish_description" class="form-label"
+                  >Descripción</label
+                >
+                <textarea
+                  class="form-control"
+                  id="dish_description"
+                  name="dish_description"
+                  rows="3"
+                ></textarea>
+              </div>
+
+              <div class="col-md-6">
+                <label for="category" class="form-label">Categoría</label>
+                <select
+                  class="form-select"
+                  id="category"
+                  name="category"
+                  required
+                >
+                  <option value="" selected disabled>Seleccionar...</option>
+                  <option value="Ensaladas">Ensaladas</option>
+                  <option value="Entrantes">Entrantes</option>
+                  <option value="Principales">Principales</option>
+                  <option value="Postres">Postres</option>
+                  <option value="Bebidas">Bebidas</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label for="topic" class="form-label">Tipo</label>
+                <select class="form-select" id="topic" name="topic" required>
+                  <option value="" selected disabled>Seleccionar...</option>
+                  <option value="Mar">Mar</option>
+                  <option value="Montaña">Montaña</option>
+                  <option value="Otros">N/A (Bebidas/Postres)</option>
+                </select>
+              </div>
+
+              <div class="col-12">
+                <div
+                  class="d-flex justify-content-between align-items-center p-3 bg-light border rounded"
+                >
+                  <label class="form-check-label fw-bold mb-0" for="available"
+                    >¿Disponible actualmente en la carta?</label
+                  >
+
+                  <div class="form-check form-switch m-0">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      id="available"
+                      name="available"
+                      value="1"
+                      checked
+                      style="transform: scale(1.3)"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <label for="dish_images" class="form-label fw-bold"
+                  >Gestión de Imágenes</label
+                >
+
+                <div class="input-group mb-3">
+                  <input
+                    class="form-control"
+                    type="file"
+                    id="dish_images"
+                    name="dish_images[]"
+                    multiple
+                    accept="image/*"
+                  />
+                  <label class="input-group-text" for="dish_images"
+                    >Subir</label
+                  >
+                </div>
+
+                <div class="p-3 border rounded bg-light">
+                  <p class="small text-muted mb-2">Imágenes actuales:</p>
+                  <div
+                    id="current-images-container"
+                    class="d-flex flex-wrap gap-2"
+                  >
+                    <small class="text-muted fst-italic"
+                      >No hay imágenes cargadas.</small
+                    >
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer bg-light">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              form="formDish"
+              class="btn btn-primary"
+              id="btnSaveDish"
+            >
+              <i class="bi bi-save"></i> Guardar Plato
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script type="module" src="/admin/js/main.js"></script>
+  </body>
+</html>

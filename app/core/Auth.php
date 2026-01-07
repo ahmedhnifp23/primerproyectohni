@@ -20,7 +20,7 @@ class Auth
             SessionManager::start();
             SessionManager::set('user_id', $user->getUserId());
             SessionManager::set('username', $user->getUsername());
-            $user->getIsAdmin() === 1 ? SessionManager::set('is_admin', true) : SessionManager::set('is_admin', false);
+            $user->getIsAdmin() == 1 ? SessionManager::set('is_admin', true) : SessionManager::set('is_admin', false);
             return true;
         }
 

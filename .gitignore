@@ -1,0 +1,27 @@
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS Files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Dependencies
+/node_modules
+/vendor
+
+# Environment & Config
+.env
+config.php
+
+# Logs
+*.log
+
+# Project Specific Ignores
+/config/
+/database/
+/docker/
+/docs/

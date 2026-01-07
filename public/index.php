@@ -26,22 +26,42 @@ if ($controller === 'api') {
 
     $filePath = CONTROLLERS_PATH . $className . ".php";
 
-
+    //If the controller file does not exist we load the ErrorController.
     if (!file_exists($filePath)) {
         $className = 'ErrorController';
         $filePath = CONTROLLERS_PATH . $className . ".php";
         $action = 'error404';
-        require_once $filePath;
+
+    }
+    //Include the controller file path
+    require_once $filePath;
+    
+    //Creathe the instance of the controller class dinamically.
+    if (class_exists($className)) {
         $controllerInstance = new $className();
-        $controllerInstance->$action();
     } else {
-        require_once $filePath;
-        $controllerInstance = new $className();
+        die("Error critico del sistema.");
     }
 
+    //Check if the method exists in the controller class
     if (method_exists($controllerInstance, $action)) {
-        $controllerInstance->$action();
+        //We use call_user_func to call the method dinamically.
+        //If there are parameters passed by GET we send them to the method in an array.
+        if (!empty($_GET)) {
+            $params = $_GET;
+            unset($params['controller']);
+            unset($params['action']);
+            unset($params['order_success']);
+            unset($params['error']);
+            call_user_func_array([$controllerInstance, $action], $params);
+        } else {
+            $controllerInstance->$action();
+        }
+        
     } else {
-        $controllerInstance->methodNotFound($action);
+        //If action or method doesnt exist, redirect to error page
+        require_once CONTROLLERS_PATH . "ErrorController.php";
+        $errorController = new ErrorController();
+        $errorController->error404();
     }
 }

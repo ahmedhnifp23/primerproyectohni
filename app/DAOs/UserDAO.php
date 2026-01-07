@@ -186,6 +186,29 @@ class UserDAO
         }
     }
 
+    public function update(User $user)
+    {
+        $this->conn = $this->db->getConnection();
+        $query = "UPDATE " . $this->table . " SET first_name = :first_name, last_name = :last_name, email = :email, username = :username, password_hash = :password_hash, phone = :phone, addresses = :addresses, birth_date = :birth_date WHERE user_id = :user_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':user_id', $user->getUserId());
+        $stmt->bindValue(':first_name', $user->getFirstName());
+        $stmt->bindValue(':last_name', $user->getLastName());
+        $stmt->bindValue(':email', $user->getEmail());
+        $stmt->bindValue(':username', $user->getUsername());
+        $stmt->bindValue(':password_hash', $user->getPasswordHash());
+        $stmt->bindValue(':phone', $user->getPhone());
+        $stmt->bindValue(':addresses', json_encode($user->getAddresses()));
+        $stmt->bindValue(':birth_date', $user->getBirthDate());
 
+        try {
+            $stmt->execute();
+            $this->db->disconnect();
+            return $stmt->rowCount();
+        } catch (PDOException $e) {
+            $this->db->disconnect();
+            throw $e;
+        }
+    }
 
 }
