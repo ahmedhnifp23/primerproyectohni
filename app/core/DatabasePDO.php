@@ -14,10 +14,16 @@ class DatabasePDO
     //Constructor of the class that creates the connection when an instance is created.
     public function __construct()
     {
-        $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname . ';charset=utf8mb4';
+        // Prioritize environment variables (Docker), fallback to class properties (Local/XAMPP)
+        $host = getenv('DB_HOST') ?: $this->host;
+        $dbname = getenv('DB_NAME') ?: $this->dbname;
+        $user = getenv('DB_USER') ?: $this->user;
+        $password = getenv('DB_PASSWORD') ?: $this->password;
+
+        $dsn = 'mysql:host=' . $host . ';dbname=' . $dbname . ';charset=utf8mb4';
 
         try {
-            $this->conn = new PDO($dsn, $this->user, $this->password);
+            $this->conn = new PDO($dsn, $user, $password);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
