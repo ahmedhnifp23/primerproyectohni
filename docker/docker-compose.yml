@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .. # Contexto en la raíz del proyecto (un nivel arriba de /docker)
+      dockerfile: docker/Dockerfile # Ubicación del Dockerfile relativa al contexto
+    container_name: web_app
+    ports:
+      - "80:80"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=thalassa_db
+      - DB_USER=root
+      - DB_PASSWORD=Asdqwe!23
+    volumes:
+      # Montamos la raíz del proyecto (..) en /var/www/html del contenedor para desarrollo
+      - ../:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  db:
+    image: mysql:8.0
+    container_name: db_mysql
+    restart: always
+    environment:
+      # Credenciales extraídas de DatabasePDO.php
+      MYSQL_ROOT_PASSWORD: 'Asdqwe!23'
+      MYSQL_DATABASE: thalassa_db
+      # Opcional: Crear un usuario específico si no quieres usar root
+      # MYSQL_USER: usuario_app
+      # MYSQL_PASSWORD: contraseña_usuario_app
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
+
+volumes:
+  mysql_data:
+
+networks:
+  app-network:

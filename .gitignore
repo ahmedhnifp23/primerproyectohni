@@ -23,5 +23,4 @@ config.php
 # Project Specific Ignores
 /config/
 /database/
-/docker/
 /docs/
