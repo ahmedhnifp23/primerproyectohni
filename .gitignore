@@ -22,5 +22,4 @@ config.php
 
 # Project Specific Ignores
 /config/
-/database/
 /docs/
