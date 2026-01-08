@@ -1,5 +1,5 @@
 export const Config = {
-    API_BASE_URL: 'http://165.232.92.59/'
+    API_BASE_URL: 'http://165.232.92.59/index.php'
 };
 
 //Function to build the full API url with endpoint and parameters
