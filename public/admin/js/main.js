@@ -386,7 +386,11 @@ function setupGlobalFunctions() {
             document.getElementById('base_price').value = dish.base_price;
             document.getElementById('dish_description').value = dish.dish_description;
             document.getElementById('category').value = dish.category;
-            document.getElementById('topic').value = dish.topic;
+            
+            //Map string topic to index for the select element
+            const topicMap = { 'Mar': 1, 'Montaña': 2, 'Vegetariano': 3, 'Vegano': 4, 'Otros': 5 };
+            document.getElementById('topic').value = topicMap[dish.topic] || dish.topic;
+            
             document.getElementById('available').checked = (dish.available == 1);
 
             const imageContainer = document.getElementById('current-images-container')
