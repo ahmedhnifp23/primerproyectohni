@@ -1,7 +1,13 @@
 USE thalassa_db;
 
-SET NAMES utf8mb4;
+-- PASO 1: Convertir a VARCHAR para quitar la restricción estricta del ENUM
+ALTER TABLE dishes MODIFY COLUMN topic VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- PASO 2: "Planchar" los datos. Sobrescribimos cualquier variante de "Montaña" con la correcta.
+-- El LIKE 'Monta%' capturará "Montana", "Montaña" (mal codificado), etc.
+UPDATE dishes SET topic = 'Montaña' WHERE topic LIKE 'Monta%';
+
+-- PASO 3: Reconstruir el ENUM con la codificación y valores correctos
 ALTER TABLE dishes 
 MODIFY COLUMN topic 
 ENUM('Mar', 'Montaña', 'Vegetariano', 'Vegano', 'Otros') 
