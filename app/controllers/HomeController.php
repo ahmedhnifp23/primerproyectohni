@@ -14,7 +14,7 @@ class HomeController {
     //Loads the home page view. Obtain dishes by topic 'Mar' and 'Montaña', configure chunk, and sends the view to the main.
     public function index() {
         $dishesByTopicMar = $this->dishController->getDishesByTopic('Mar');
-        $dishesByTopicMontaña = $this->dishController->getDishesByTopic('2');
+        $dishesByTopicMontaña = $this->dishController->getDishesByTopic('Montaña');
         
         //Chunk the dishes into groups of 4
         $chunksMar = array_chunk($dishesByTopicMar, 4);
