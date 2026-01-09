@@ -388,7 +388,7 @@ function setupGlobalFunctions() {
             document.getElementById('category').value = dish.category;
             
             //Map string topic to index for the select element
-            const topicMap = { 'Mar': 0, 'Montaña': 1, 'Vegetariano': 2, 'Vegano': 3, 'Otros': 4 };
+            const topicMap = { 'Mar': 1, 'Montaña': 2, 'Vegetariano': 3, 'Vegano': 4, 'Otros': 5 };
             document.getElementById('topic').value = topicMap[dish.topic] || dish.topic;
             
             document.getElementById('available').checked = (dish.available == 1);
