@@ -1,13 +1,13 @@
 <div id="bannerSlider" class="carousel slide" data-bs-ride="true" data-bs-touch="true" data-bs-pause="hover">
     <div class="carousel-inner">
         <div class="carousel-item active" data-bs-interval="7000">
-            <a href="#"><img src="/assets/images/banners/banner1.png" class="d-block w-100" alt="Banner image 1"></a>
+            <a href="#"><img src="/assets/images/banners/banner1.webp" class="d-block w-100" alt="Banner image 1"></a>
         </div>
         <div class="carousel-item">
-            <a href="#"><img src="/assets/images/banners/banner2.png" class="d-block w-100" alt="Banner image 2"></a>
+            <a href="#"><img src="/assets/images/banners/banner2.webp" class="d-block w-100" alt="Banner image 2"></a>
         </div>
         <div class="carousel-item">
-            <a href="#"><img src="/assets/images/banners/banner3.png" class="d-block w-100" alt="Banner image 3"></a>
+            <a href="#"><img src="/assets/images/banners/banner3.webp" class="d-block w-100" alt="Banner image 3"></a>
         </div>
     </div>
 
